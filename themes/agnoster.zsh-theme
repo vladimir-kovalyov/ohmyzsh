@@ -62,7 +62,11 @@ esac
 : ${AGNOSTER_DIR_BG:=blue}
 
 # user@host
+<<<<<<< HEAD
 : ${AGNOSTER_CONTEXT_FG:=${CURRENT_DEFAULT_FG}}
+=======
+: ${AGNOSTER_CONTEXT_FG:=default}
+>>>>>>> ecbe21e (feat(agnoster): add color config and add some git stuff (#12505))
 : ${AGNOSTER_CONTEXT_BG:=black}
 
 # Git related
@@ -99,7 +103,10 @@ esac
 : ${AGNOSTER_STATUS_RETVAL_FG:=red}
 : ${AGNOSTER_STATUS_ROOT_FG:=yellow}
 : ${AGNOSTER_STATUS_JOB_FG:=cyan}
+<<<<<<< HEAD
 : ${AGNOSTER_STATUS_FG:=${CURRENT_DEFAULT_FG}}
+=======
+>>>>>>> ecbe21e (feat(agnoster): add color config and add some git stuff (#12505))
 : ${AGNOSTER_STATUS_BG:=black}
 
 ## Non-Color settings - set to 'true' to enable
@@ -185,7 +192,11 @@ git_toplevel() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USERNAME" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+<<<<<<< HEAD
     prompt_segment black default "%(!.%{%F{yellow}%}.)"
+=======
+    prompt_segment "$AGNOSTER_CONTEXT_BG" "$AGNOSTER_CONTEXT_FG" "%(!.%{%F{$AGNOSTER_STATUS_ROOT_FG}%}.)%n@%m"
+>>>>>>> 0e99f40 (feat(agnoster): add color config and add some git stuff (#12505))
   fi
 }
 
@@ -347,7 +358,16 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
+<<<<<<< HEAD
   prompt_segment blue $CURRENT_FG '%c'
+=======
+  if [[ $AGNOSTER_GIT_INLINE == 'true' ]] && $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
+    # Git repo and inline path enabled, hence only show the git root
+    prompt_segment "$AGNOSTER_DIR_BG" "$AGNOSTER_DIR_FG" "$(git_toplevel | sed "s:^$HOME:~:")"
+  else
+    prompt_segment "$AGNOSTER_DIR_BG" "$AGNOSTER_DIR_FG" '%~'
+  fi
+>>>>>>> 0e99f40 (feat(agnoster): add color config and add some git stuff (#12505))
 }
 
 # Virtualenv: current working virtualenv
@@ -380,7 +400,11 @@ prompt_status() {
   [[ $UID -eq 0 ]] && symbols+="%{%F{$AGNOSTER_STATUS_ROOT_FG}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$AGNOSTER_STATUS_JOB_FG}%}⚙"
 
+<<<<<<< HEAD
   [[ -n "$symbols" ]] && prompt_segment "$AGNOSTER_STATUS_BG" "$AGNOSTER_STATUS_FG" "$symbols"
+=======
+  [[ -n "$symbols" ]] && prompt_segment "$AGNOSTER_STATUS_BG" default "$symbols"
+>>>>>>> ecbe21e (feat(agnoster): add color config and add some git stuff (#12505))
 }
 
 #AWS Profile:
