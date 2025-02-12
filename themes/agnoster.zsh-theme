@@ -45,71 +45,6 @@ case ${SOLARIZED_THEME:-dark} in
       ;;
 esac
 
-### Theme Configuration Initialization
-#
-# Override these settings in your ~/.zshrc
-
-# Current working directory
-: ${AGNOSTER_DIR_FG:=${CURRENT_FG}}
-: ${AGNOSTER_DIR_BG:=blue}
-
-# user@host
-<<<<<<< HEAD
-: ${AGNOSTER_CONTEXT_FG:=default}
-=======
-: ${AGNOSTER_CONTEXT_FG:=${CURRENT_DEFAULT_FG}}
->>>>>>> 3412806 (local fix)
-: ${AGNOSTER_CONTEXT_BG:=black}
-
-# Git related
-: ${AGNOSTER_GIT_CLEAN_FG:=${CURRENT_FG}}
-: ${AGNOSTER_GIT_CLEAN_BG:=green}
-: ${AGNOSTER_GIT_DIRTY_FG:=black}
-: ${AGNOSTER_GIT_DIRTY_BG:=yellow}
-
-# Bazaar related
-: ${AGNOSTER_BZR_CLEAN_FG:=${CURRENT_FG}}
-: ${AGNOSTER_BZR_CLEAN_BG:=green}
-: ${AGNOSTER_BZR_DIRTY_FG:=black}
-: ${AGNOSTER_BZR_DIRTY_BG:=yellow}
-
-# Mercurial related
-: ${AGNOSTER_HG_NEWFILE_FG:=white}
-: ${AGNOSTER_HG_NEWFILE_BG:=red}
-: ${AGNOSTER_HG_CHANGED_FG:=black}
-: ${AGNOSTER_HG_CHANGED_BG:=yellow}
-: ${AGNOSTER_HG_CLEAN_FG:=${CURRENT_FG}}
-: ${AGNOSTER_HG_CLEAN_BG:=green}
-
-# VirtualEnv colors
-: ${AGNOSTER_VENV_FG:=black}
-: ${AGNOSTER_VENV_BG:=blue}
-
-# AWS Profile colors
-: ${AGNOSTER_AWS_PROD_FG:=yellow}
-: ${AGNOSTER_AWS_PROD_BG:=red}
-: ${AGNOSTER_AWS_FG:=black}
-: ${AGNOSTER_AWS_BG:=green}
-
-# Status symbols
-: ${AGNOSTER_STATUS_RETVAL_FG:=red}
-: ${AGNOSTER_STATUS_ROOT_FG:=yellow}
-: ${AGNOSTER_STATUS_JOB_FG:=cyan}
-<<<<<<< HEAD
-=======
-: ${AGNOSTER_STATUS_FG:=${CURRENT_DEFAULT_FG}}
->>>>>>> 3412806 (local fix)
-: ${AGNOSTER_STATUS_BG:=black}
-
-## Non-Color settings - set to 'true' to enable
-# Show the actual numeric return value rather than a cross symbol.
-: ${AGNOSTER_STATUS_RETVAL_NUMERIC:=false}
-# Show git working dir in the style "/git/root   master  relative/dir" instead of "/git/root/relative/dir   master"
-: ${AGNOSTER_GIT_INLINE:=false}
-# Show the git branch status in the prompt rather than the generic branch symbol
-: ${AGNOSTER_GIT_BRANCH_STATUS:=true}
-
-
 # Special Powerline characters
 
 () {
@@ -172,7 +107,7 @@ git_toplevel() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USERNAME" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment "$AGNOSTER_CONTEXT_BG" "$AGNOSTER_CONTEXT_FG" "%(!.%{%F{$AGNOSTER_STATUS_ROOT_FG}%}.)"
+    prompt_segment black default "%(!.%{%F{yellow}%}.)%n@%m"
   fi
 }
 
@@ -311,12 +246,7 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  if [[ $AGNOSTER_GIT_INLINE == 'true' ]] && $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
-    # Git repo and inline path enabled, hence only show the git root
-    prompt_segment "$AGNOSTER_DIR_BG" "$AGNOSTER_DIR_FG" "$(git_toplevel | sed "s:^$HOME:~:")"
-  else
-    prompt_segment "$AGNOSTER_DIR_BG" "$AGNOSTER_DIR_FG" '%c'
-  fi
+  prompt_segment blue $CURRENT_FG '%~'
 }
 
 # Virtualenv: current working virtualenv
@@ -341,7 +271,7 @@ prompt_status() {
   [[ $UID -eq 0 ]] && symbols+="%{%F{$AGNOSTER_STATUS_ROOT_FG}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{$AGNOSTER_STATUS_JOB_FG}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment "$AGNOSTER_STATUS_BG" "$AGNOSTER_STATUS_FG" "$symbols"
+  [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
 
 #AWS Profile:
