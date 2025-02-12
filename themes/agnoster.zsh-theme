@@ -196,6 +196,14 @@ prompt_git_relative() {
   fi;
 }
 
+prompt_git_relative() {
+  local repo_root=$(git_toplevel)
+  local path_in_repo=$(pwd | sed "s/^$(echo "$repo_root" | sed 's:/:\\/:g;s/\$/\\$/g')//;s:^/::;s:/$::;")
+  if [[ $path_in_repo != '' ]]; then
+    prompt_segment "$AGNOSTER_DIR_BG" "$AGNOSTER_DIR_FG" "$path_in_repo"
+  fi;
+}
+
 # Git: branch/detached head, dirty status
 prompt_git() {
   (( $+commands[git] )) || return
